@@ -14,7 +14,6 @@ import java.time.LocalDateTime
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener::class)
 class BaseEntity {
-
     @CreatedBy
     @Column(name = "register_member")
     var registerMember : String = "";
@@ -33,5 +32,4 @@ class BaseEntity {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     var updateDate : LocalDateTime = LocalDateTime.now()
         protected set
-
 }

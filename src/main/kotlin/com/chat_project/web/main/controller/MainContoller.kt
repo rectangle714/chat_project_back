@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping
 @Controller
 @RequestMapping("/main")
 class MainContoller {
-
     @GetMapping("/main")
     fun main(model: Model): String {
         model["title"] = "testTitle"
