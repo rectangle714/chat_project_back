@@ -4,14 +4,16 @@ import com.chat_project.web.common.Role
 import com.chat_project.web.member.dto.MemberDTO
 import com.chat_project.web.member.entity.Member
 import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.crypto.password.PasswordEncoder
+import java.util.stream.Collectors
 
 class CustomUserDetails private constructor(
     private val email: String,
     private val password: String,
     private val nickname: String,
-    private val role: Role
+    private val role: MutableSet<Role>
 ): UserDetails  {
     companion object {
         fun from(member: Member) : CustomUserDetails {
@@ -35,7 +37,7 @@ class CustomUserDetails private constructor(
     }
 
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
-        TODO("Not yet implemented")
+        return role.stream().map { role -> SimpleGrantedAuthority("ROLE_$role") }.collect(Collectors.toSet())
     }
 
     override fun isAccountNonExpired(): Boolean {

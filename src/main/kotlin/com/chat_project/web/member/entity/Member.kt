@@ -7,7 +7,7 @@ import jakarta.persistence.*
 class Member(
     email: String,
     password: String,
-    role: Role
+    role: MutableSet<Role>
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,5 +18,5 @@ class Member(
     var name: String = ""
     var nickname: String = ""
     @Enumerated(EnumType.STRING)
-    var role: Role = role
+    var role: MutableSet<Role> = role
 }
