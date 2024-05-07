@@ -13,7 +13,7 @@ class CustomUserDetails private constructor(
     private val email: String,
     private val password: String,
     private val nickname: String,
-    private val role: MutableSet<Role>
+    private val role: Role
 ): UserDetails  {
     companion object {
         fun from(member: Member) : CustomUserDetails {
@@ -37,7 +37,8 @@ class CustomUserDetails private constructor(
     }
 
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
-        return role.stream().map { role -> SimpleGrantedAuthority("ROLE_$role") }.collect(Collectors.toSet())
+//        return role.stream().map{ role -> SimpleGrantedAuthority("ROLE_$role") }.collect(Collectors.toSet())
+        return arrayListOf(SimpleGrantedAuthority(role.value))
     }
 
     override fun isAccountNonExpired(): Boolean {
