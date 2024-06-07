@@ -6,11 +6,16 @@ import jakarta.persistence.*
 
 @Entity
 class Chat(
-    var content: String,
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    var member: Member
+    content: String,
+    member: Member
 ): BaseEntity() {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id:Long? = null
+    var id:Long? = null
+    var content = content
+        protected set
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    var member = member
+        protected set
+
 }

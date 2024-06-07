@@ -36,10 +36,14 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
+    testImplementation("io.mockk:mockk:1.4.1")
 
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     implementation(kotlin("stdlib-jdk8"))
+
+    implementation("com.google.code.gson:gson:2.7")
+    implementation("org.modelmapper:modelmapper:2.1.1")
 
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")
 

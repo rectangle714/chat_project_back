@@ -2,6 +2,7 @@
     width: 400px;
     height: 350px;
     padding: 40px;
+    padding-left: 200px;
     box-sizing: border-box;
 }
 .login-wrapper > h2{

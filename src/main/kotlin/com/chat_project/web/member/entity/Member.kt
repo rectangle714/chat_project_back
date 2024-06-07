@@ -8,17 +8,27 @@ import jakarta.persistence.*
 
 @Entity
 class Member (
-    var email: String,
-    var password: String,
-    var nickname: String,
-    @Enumerated(EnumType.STRING)
-    var role: Role,
-    @OneToMany(mappedBy = "member")
-    var chattings: MutableList<Chat> = ArrayList()
+    email: String,
+    password: String,
+    nickname: String,
+    role: Role,
+    chattings: MutableList<Chat> = ArrayList()
 ): BaseEntity() {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
     var id: Long? = null
+    var email = email
+        protected set
+    var password = password
+        protected set
+    var nickname = nickname
+        protected set
+    @Enumerated(EnumType.STRING)
+    var role = role
+        protected set
+    @OneToMany(mappedBy = "member")
+    var chattings= chattings
+        protected set
 
     fun updateMemberInfo(memberDTO: MemberDTO) {
         email = memberDTO.email
