@@ -1,6 +1,6 @@
 package com.chat_project.web.chat.entity
 
-import com.chat_project.web.common.BaseEntity
+import com.chat_project.web.common.Base
 import com.chat_project.web.member.entity.Member
 import jakarta.persistence.*
 
@@ -8,7 +8,7 @@ import jakarta.persistence.*
 class Chat(
     content: String,
     member: Member
-): BaseEntity() {
+): Base() {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id:Long? = null
     var content = content

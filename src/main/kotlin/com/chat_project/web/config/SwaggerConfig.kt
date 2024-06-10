@@ -15,7 +15,7 @@ class SwaggerConfig {
         .info(
             Info()
                 .title("Swagger")
-                .description("API 테스트")
+                .description("BackEnd 서버 API 명세")
                 .version("1.0.0")
         )
 }

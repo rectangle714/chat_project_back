@@ -26,6 +26,7 @@ class SecurityConfig {
             .csrf(CsrfConfigurer<HttpSecurity>::disable)
             .sessionManagement(SessionManagementConfigurer<HttpSecurity>::disable)
         http.authorizeHttpRequests{
+            it.requestMatchers("/api-docs/**","/swagger-ui/**").permitAll()
             it.requestMatchers("/member/login").permitAll()
             it.requestMatchers("/manager/**").hasAnyRole("MANAGER","ADMIN")
             it.requestMatchers("/admin/**").hasRole("ADMIN")
