@@ -1,4 +1,4 @@
-package com.chat_project.web.common
+package com.chat_project.common
 
 import com.fasterxml.jackson.annotation.JsonFormat
 import jakarta.persistence.Column
@@ -11,7 +11,7 @@ import java.time.LocalDateTime
 
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener::class)
-abstract class Base() {
+abstract class BaseEntity() {
     @CreatedDate
     @Column(name = "register_date", nullable = false, updatable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")

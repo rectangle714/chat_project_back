@@ -1,13 +1,10 @@
 package com.chat_project.web.security
 
-import com.chat_project.web.common.Role
-import com.chat_project.web.member.dto.MemberDTO
+import com.chat_project.web.member.Role
 import com.chat_project.web.member.entity.Member
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
-import org.springframework.security.crypto.password.PasswordEncoder
-import java.util.stream.Collectors
 
 class CustomUserDetails private constructor(
     private val email: String,

@@ -1,4 +1,4 @@
-package com.chat_project.web.common
+package com.chat_project.common
 
 import org.slf4j.LoggerFactory
 

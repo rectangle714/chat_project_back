@@ -5,21 +5,19 @@ import com.chat_project.web.member.entity.Member
 import jakarta.persistence.*
 
 @Entity
-class Chat(
-    content: String,
-    member: Member
+class ChatRoomMate(
+    member:Member,
+    chatRoom:ChatRoom
 ): BaseEntity() {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "chat_id")
+    @Column(name = "chat_room_mate_id")
     var id:Long? = null
-    var content = content
-        protected set
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     var member = member
-        protected set
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chat_room_id")
-    var chatRoom: ChatRoom? = null
+    var chatRoom = chatRoom
 }

@@ -1,11 +1,13 @@
 package com.chat_project.web.member.entity
 
 import com.chat_project.web.chat.entity.Chat
-import com.chat_project.web.common.Base
-import com.chat_project.web.common.Role
+import com.chat_project.web.chat.entity.ChatRoomMate
+import com.chat_project.common.BaseEntity
+import com.chat_project.web.member.Role
 import com.chat_project.web.member.dto.MemberDTO
 import groovy.transform.builder.Builder
 import jakarta.persistence.*
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 
 @Entity
 @Builder
@@ -13,9 +15,8 @@ class Member (
     email: String,
     password: String,
     nickname: String,
-    role: Role,
-    chattings: MutableList<Chat> = ArrayList()
-): Base() {
+    role: Role
+): BaseEntity() {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
     var id:Long = 0
@@ -29,13 +30,26 @@ class Member (
     var role = role
         protected set
     @OneToMany(mappedBy = "member")
-    var chattings= chattings
+    var chattings:MutableList<Chat> = ArrayList()
         protected set
 
-    fun updateMemberInfo(memberDTO: MemberDTO) {
-        email = memberDTO.email
-        password = memberDTO.password
-        nickname = memberDTO.nickname
+    @OneToMany(mappedBy = "member")
+    var chatRoomMates:MutableList<ChatRoomMate> = ArrayList()
+        protected set
+
+    companion object{
+        fun from(memberDTO: MemberDTO, encoder: BCryptPasswordEncoder) = Member(
+            email = memberDTO.email,
+            password = encoder.encode(memberDTO.password),
+            nickname = memberDTO.nickname,
+            role = memberDTO.role
+        )
+    }
+
+    fun update(newMember: MemberDTO, encoder: BCryptPasswordEncoder) {
+        this.email = newMember.email
+        this.password = encoder.encode(newMember.password)
+        this.nickname = newMember.nickname
     }
 
 }

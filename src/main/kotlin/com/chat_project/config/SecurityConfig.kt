@@ -1,4 +1,4 @@
-package com.chat_project.web.config
+package com.chat_project.config
 
 import org.codehaus.groovy.vmplugin.v8.Java8
 import org.springframework.context.annotation.Bean
@@ -17,22 +17,28 @@ import org.springframework.security.web.SecurityFilterChain
 @Configuration
 @EnableWebSecurity
 class SecurityConfig {
+
+    /* 접근 허용하는 uri 배열 */
+    private val allowedUrls = arrayOf("/api-docs/**","/swagger-ui/**","/member/signUp", "/member/login")
+
     @Bean
     fun passwordEncoder() = BCryptPasswordEncoder()
 
     @Bean
-    fun filterChain(http: HttpSecurity): SecurityFilterChain {
-        http.httpBasic(HttpBasicConfigurer<HttpSecurity>::disable)
-            .csrf(CsrfConfigurer<HttpSecurity>::disable)
-            .sessionManagement(SessionManagementConfigurer<HttpSecurity>::disable)
-        http.authorizeHttpRequests{
-            it.requestMatchers("/api-docs/**","/swagger-ui/**").permitAll()
-            it.requestMatchers("/member/login").permitAll()
+    fun filterChain(http: HttpSecurity) {
+        http.httpBasic{ it.disable() }
+            .csrf { it.disable() }
+            .headers { it.frameOptions { frameOptions -> frameOptions.disable() } }
+            .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
+
+        http.authorizeHttpRequests {
+            it.requestMatchers(*allowedUrls).permitAll()
             it.requestMatchers("/manager/**").hasAnyRole("MANAGER","ADMIN")
             it.requestMatchers("/admin/**").hasRole("ADMIN")
             it.anyRequest().authenticated()
         }
-        return http.build()
+
+        http.build()!!
     }
 
 }

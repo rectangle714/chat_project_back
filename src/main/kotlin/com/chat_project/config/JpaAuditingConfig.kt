@@ -1,4 +1,4 @@
-package com.chat_project.web.config
+package com.chat_project.config
 
 import org.springframework.context.annotation.Configuration
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing

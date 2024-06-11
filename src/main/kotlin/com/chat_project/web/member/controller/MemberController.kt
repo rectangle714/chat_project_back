@@ -31,30 +31,17 @@ class MemberController(
     private val passwordEncoder: BCryptPasswordEncoder
 ) {
 
-    @GetMapping("/info")
-    @Tag(name = "로그인 이후 테스트")
-    @Operation(method = "GET", summary = "사용자 정보 조회")
-    fun info(memberDTO: MemberDTO): ResponseEntity<MemberDTO> {
-        val member = memberRepository.findByEmail(memberDTO.email)
-        val memberDTO = modelMapper.map(member, MemberDTO::class.java)
-        memberDTO.password = "";
-        return ResponseEntity.status(HttpStatus.OK).body(memberDTO)
-    }
-
-    @PutMapping("/update")
-    @Tag(name = "로그인 이후 테스트")
-    @Operation(method = "PUT", summary = "사용자 정보 수정")
-    fun update(memberDTO: MemberDTO): ResponseEntity<String> {
-        var result = "";
-        return ResponseEntity.status(HttpStatus.OK).body(result)
-    }
-
-    @DeleteMapping("/delete")
-    @Tag(name = "로그인 이후 테스트")
-    @Operation(method = "DELETE", summary = "사용자 정보 삭제")
-    fun delete(memberDTO: MemberDTO): ResponseEntity<String> {
-        var result = "";
-        return ResponseEntity.status(HttpStatus.OK).body(result)
+    @PostMapping("/signUp")
+    @Tag(name = "로그인 이전 테스트")
+    @Operation(method = "POST", summary = "사용자 회원가입", description = "사용자 회원가입")
+    fun signUp(memberDTO: MemberDTO) : ResponseEntity<String> {
+        var result = ""
+        return try{
+            memberService.insertMember(memberDTO)
+            ResponseEntity.status(HttpStatus.OK).body("success")
+        } catch(e: Exception) {
+            ResponseEntity.status(HttpStatus.CONFLICT).body("fail")
+        }
     }
 
     @PostMapping("/login")
@@ -67,17 +54,30 @@ class MemberController(
         return ResponseEntity.status(HttpStatus.OK).body(memberDTO)
     }
 
-    @PostMapping("/signUp")
-    @Tag(name = "로그인 이전 테스트")
-    @Operation(method = "POST", summary = "사용자 회원가입", description = "사용자 회원가입")
-    fun signUp(memberDTO: MemberDTO) : ResponseEntity<String> {
-        var result = ""
-        return try{
-            memberService.signUp(memberDTO)
-            ResponseEntity.status(HttpStatus.OK).body("success")
-        } catch(e: Exception) {
-            ResponseEntity.status(HttpStatus.CONFLICT).body("fail")
-        }
+    @GetMapping("/info")
+    @Tag(name = "로그인 이후 테스트")
+    @Operation(method = "GET", summary = "사용자 정보 조회")
+    fun info(memberDTO: MemberDTO): ResponseEntity<MemberDTO> {
+        val member: Member = memberRepository.findByEmail(memberDTO.email)
+        val memberDTO: MemberDTO = modelMapper.map(member, MemberDTO::class.java)
+        return ResponseEntity.status(HttpStatus.OK).body(memberDTO)
+    }
+
+    @PutMapping("/update")
+    @Tag(name = "로그인 이후 테스트")
+    @Operation(method = "PUT", summary = "사용자 정보 수정")
+    fun update(memberDTO: MemberDTO): ResponseEntity<String> {
+        var result = "";
+        result = memberService.updateMember(memberDTO)
+        return ResponseEntity.status(HttpStatus.OK).body(result)
+    }
+
+    @DeleteMapping("/delete")
+    @Tag(name = "로그인 이후 테스트")
+    @Operation(method = "DELETE", summary = "사용자 정보 삭제")
+    fun delete(memberDTO: MemberDTO): ResponseEntity<String> {
+        var result = "";
+        return ResponseEntity.status(HttpStatus.OK).body(result)
     }
 
 }

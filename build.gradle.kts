@@ -30,31 +30,41 @@ repositories {
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
-
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
-    implementation("nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect")
+    implementation("org.springframework.boot:spring-boot-starter-data-redis")
     implementation("org.springframework.boot:spring-boot-starter-web")
+
+    implementation("nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     testImplementation("io.mockk:mockk:1.4.1")
 
-    // QueryDsl
-    implementation("com.querydsl:querydsl-jpa:5.0.0")
-    kapt("com.querydsl:querydsl-apt:5.0.0:jpa")
+    /* QueryDsl */
+    implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
+    implementation("com.querydsl:querydsl-apt:5.0.0:jakarta")
+    implementation("jakarta.persistence:jakarta.persistence-api")
+    implementation("jakarta.annotation:jakarta.annotation-api")
+    kapt("com.querydsl:querydsl-apt:5.0.0:jakarta")
+    kapt("org.springframework.boot:spring-boot-configuration-processor")
 
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
     implementation(kotlin("stdlib-jdk8"))
 
-    implementation("com.google.code.gson:gson:2.7")
     implementation("org.modelmapper:modelmapper:2.1.1")
 
+    /* swagger */
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")
 
-    testCompileOnly("org.projectlombok:lombok:1.18.12")
+    /* jwt */
+    implementation("io.jsonwebtoken:jjwt-api:0.11.5")
+    runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
+    runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
+
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
     testAnnotationProcessor("org.projectlombok:lombok:1.18.12")
+    testCompileOnly("org.projectlombok:lombok:1.18.12")
 }
 
 tasks.withType<KotlinCompile> {

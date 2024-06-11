@@ -1,4 +1,4 @@
-package com.chat_project.web.config
+package com.chat_project.config
 
 import io.swagger.v3.oas.models.Components
 import io.swagger.v3.oas.models.OpenAPI

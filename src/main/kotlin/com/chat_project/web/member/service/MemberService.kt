@@ -4,6 +4,8 @@ import com.chat_project.web.member.dto.MemberDTO
 import org.springframework.stereotype.Service
 
 interface MemberService {
-    fun signUp(memberDTO: MemberDTO) :String
+
+    fun insertMember(memberDTO: MemberDTO): String
+    fun updateMember(memberDTO: MemberDTO): String
 
 }
