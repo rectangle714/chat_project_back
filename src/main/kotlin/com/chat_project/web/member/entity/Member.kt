@@ -12,10 +12,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 @Entity
 @Builder
 class Member (
-    email: String,
-    password: String,
-    nickname: String,
-    role: Role
+    email: String = "",
+    password: String = "",
+    nickname: String = "",
+    role: Role = Role.USER
 ): BaseEntity() {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")

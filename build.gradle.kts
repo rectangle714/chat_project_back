@@ -13,10 +13,7 @@ plugins {
 
 group = "com"
 version = "0.0.1-SNAPSHOT"
-
-java {
-    sourceCompatibility = JavaVersion.VERSION_17
-}
+java.sourceCompatibility = JavaVersion.VERSION_17
 
 configurations {
     compileOnly {
@@ -67,16 +64,47 @@ dependencies {
     testCompileOnly("org.projectlombok:lombok:1.18.12")
 }
 
+// Querydsl 설정부 추가 - start
+val generated = file("src/main/generated")
+
+// querydsl QClass 파일 생성 위치를 지정
+tasks.withType<JavaCompile> {
+    options.generatedSourceOutputDirectory.set(generated)
+}
+
+// kotlin source set 에 querydsl QClass 위치 추가
+sourceSets {
+    main {
+        kotlin.srcDirs(generated)
+    }
+}
+
+// gradle clean 시에 QClass 디렉토리 삭제
+tasks.named("clean") {
+    doLast {
+        generated.deleteOnExit()
+        /*generated.deleteRecursively()*/
+    }
+}
+
+
 tasks.withType<KotlinCompile> {
     kotlinOptions {
         jvmTarget = "17"
     }
 }
 
+
 allOpen {
     annotation("jakarta.persistence.Entity")
     annotation("jakarta.persistence.Embeddable")
     annotation("jakarta.persistence.MappedSuperclass")
+}
+
+noArg {
+    annotation("jakarta.persistence.Entity")
+    annotation("jakarta.persistence.MappedSuperclass")
+    annotation("jakarta.persistence.Embeddable")
 }
 
 tasks.withType<Test> {
