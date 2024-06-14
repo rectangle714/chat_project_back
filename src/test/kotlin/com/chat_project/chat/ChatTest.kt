@@ -22,8 +22,8 @@ class ChatTest {
     @DisplayName("채팅 생성")
     @Transactional
     fun createChat() {
-        var member: Member = memberRepository.findByEmail("test")
-        val chat: Chat = Chat( "test", member)
+        var member: Member? = memberRepository.findByEmail("test")
+        val chat: Chat? = member?.let { Chat( "test", it) }
         chatRepository.save(chat)
     }
 
@@ -31,8 +31,8 @@ class ChatTest {
     @DisplayName("채팅 조회")
     @Transactional(readOnly = true)
     fun selectChat() {
-        val member: Member = memberRepository.findByEmail("test")
-        val chatList: List<Chat> = chatRepository.findByMember(member)
+        val member: Member? = memberRepository.findByEmail("test")
+        val chatList: List<Chat>? = member?.let { chatRepository.findByMember(it) }
     }
 
 }

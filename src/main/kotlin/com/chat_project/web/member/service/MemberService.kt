@@ -7,8 +7,12 @@ import org.springframework.stereotype.Service
 interface MemberService {
 
     fun login(email: String, password: String): MemberDTO
-    fun insertMember(memberDTO: MemberDTO): String
-    fun updateMember(memberDTO: MemberDTO): String
+    fun signUp(memberDTO: MemberDTO): String
+
+    fun info(email: String): MemberDTO
+    fun update(memberDTO: MemberDTO): String
+
+
 
 
 }

@@ -8,9 +8,10 @@ import lombok.extern.slf4j.Slf4j
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.test.annotation.Rollback
 import org.springframework.transaction.annotation.Transactional
 
 @Slf4j
@@ -24,11 +25,12 @@ class MemberTest {
     private lateinit var chatRepository: ChatRepository
 
     @Autowired
-    private lateinit var passwordEncoder: PasswordEncoder
+    private lateinit var passwordEncoder: BCryptPasswordEncoder
 
     @Test
     @DisplayName("사용자 생성")
     @Transactional
+    @Rollback(value = false)
     fun createMember() {
         val password: String = passwordEncoder.encode("123")
         val newMember: Member = Member("test", password, "nickname", Role.USER)
@@ -40,7 +42,7 @@ class MemberTest {
     @Transactional(readOnly = true)
     fun selectMember() {
         val findByEmail = memberRepository.findByEmail("test")
-        println("사용자 정보 ${findByEmail.email}");
+        println("사용자 정보 ${findByEmail?.email}");
     }
 
 }

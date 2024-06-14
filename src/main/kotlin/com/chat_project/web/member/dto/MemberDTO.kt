@@ -9,6 +9,8 @@ data class MemberDTO (
     var password: String = "",
     var nickname: String = "",
     var role: Role = Role.USER,
-    var registerDate: LocalDateTime,
-    var updateDate: LocalDateTime
-)
+    var registerDate: LocalDateTime = LocalDateTime.now(),
+    var updateDate: LocalDateTime = LocalDateTime.now()
+) {
+
+}

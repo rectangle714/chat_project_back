@@ -30,6 +30,7 @@ class JwtAuthenticationFilter(
                 .apply { details = WebAuthenticationDetails(request) }
                 .also { SecurityContextHolder.getContext().authentication = it }
         } catch (e: Exception) {
+            // 예외 발생 시 ExceptionHandler에서 처리한다.
             request.setAttribute("exception", e)
         }
 
