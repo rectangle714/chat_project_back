@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import org.modelmapper.ModelMapper
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.security.core.userdetails.User
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.web.bind.annotation.*
@@ -35,13 +36,18 @@ class MemberController(
     @Tag(name = "로그인 이전 테스트")
     @Operation(method = "POST", summary = "사용자 로그인", description = "사용자 로그인")
     @PostMapping("/login")
-    fun login(email: String, password: String) : ResponseEntity<MemberDTO> =
+    fun login(email: String, password: String) : ResponseEntity<String> =
         ResponseEntity.status(HttpStatus.OK).body(memberService.login(email, password))
+
+    @Tag(name="로그인 이후 테스트")
+    @Operation(method = "POST", summary = "사용자 로그아웃", description = "사용자 로그아웃 API")
+    @PostMapping("/logout")
+    fun logout(@AuthenticationPrincipal user: User) = ResponseEntity.status(HttpStatus.OK).body(memberService.logout(user.username))
 
     @Tag(name = "로그인 이후 테스트")
     @Operation(method = "GET", summary = "사용자 정보 조회")
     @GetMapping("/info")
-    fun info(user: User): ResponseEntity<MemberDTO>
+    fun info(@AuthenticationPrincipal user: User): ResponseEntity<MemberDTO>
         = memberService.info(user.username)
             .let { return ResponseEntity.status(HttpStatus.OK).body(it) }
 
@@ -58,9 +64,7 @@ class MemberController(
     @Tag(name = "로그인 이후 테스트")
     @Operation(method = "DELETE", summary = "사용자 정보 삭제")
     @DeleteMapping("/delete")
-    fun delete(memberDTO: MemberDTO): ResponseEntity<String> {
-        var result = "";
-        return ResponseEntity.status(HttpStatus.OK).body(result)
-    }
+    fun delete(@AuthenticationPrincipal user: User): ResponseEntity<String>
+        = ResponseEntity.status(HttpStatus.OK).body(memberService.delete(user.username))
 
 }
