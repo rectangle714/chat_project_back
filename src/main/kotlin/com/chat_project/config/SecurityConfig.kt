@@ -1,6 +1,7 @@
 package com.chat_project.config
 
 import com.chat_project.security.JwtAuthenticationFilter
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -13,12 +14,11 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 @Configuration
 @EnableWebSecurity
 class SecurityConfig(
+    @Value("\${allowedUrls}")
+    private val allowedUrls: Array<String>,
     private val jwtAuthenticationFilter: JwtAuthenticationFilter,
-    private val entryPoint: AuthenticationEntryPoint
+    private val entryPoint: AuthenticationEntryPoint,
 ) {
-    /* 접근 허용하는 uri 배열 */
-    private val allowedUrls = arrayOf("/api-docs/**","/swagger-ui/**","/member/signUp","/member/login")
-
     @Bean
     fun passwordEncoder() = BCryptPasswordEncoder()
 

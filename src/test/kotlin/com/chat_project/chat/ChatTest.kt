@@ -1,7 +1,7 @@
 package com.chat_project.chat
 
 import com.chat_project.web.chat.entity.Chat
-import com.chat_project.web.chat.repository.ChatRepository
+import com.chat_project.web.chat.repository.chat.ChatRepository
 import com.chat_project.web.member.entity.Member
 import com.chat_project.web.member.repository.MemberRepository
 import org.junit.jupiter.api.DisplayName
@@ -32,7 +32,7 @@ class ChatTest {
     @Transactional(readOnly = true)
     fun selectChat() {
         val member: Member? = memberRepository.findByEmail("test")
-        val chatList: List<Chat>? = member?.let { chatRepository.findByMember(it) }
+        val chatList: List<Chat>? = member?.let { chatRepository.findByMemberEmail(it.email) }
     }
 
 }

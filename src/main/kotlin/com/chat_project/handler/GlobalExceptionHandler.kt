@@ -1,6 +1,7 @@
 package com.chat_project.handler
 
 import com.chat_project.common.dto.ApiResponse
+import com.chat_project.exception.CustomException
 import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.MalformedJwtException
 import io.jsonwebtoken.security.SignatureException
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 
 @RestControllerAdvice
 class GlobalExceptionHandler {
-    @ExceptionHandler(IllegalArgumentException::class, NoSuchElementException::class)
+    @ExceptionHandler(IllegalArgumentException::class, NoSuchElementException::class, CustomException::class)
     fun commonException(e: Exception) = ResponseEntity.badRequest().body(ApiResponse.error(e.message))
 
     @ExceptionHandler(AccessDeniedException::class)

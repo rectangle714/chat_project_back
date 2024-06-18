@@ -1,6 +1,6 @@
 package com.chat_project.member
 
-import com.chat_project.web.chat.repository.ChatRepository
+import com.chat_project.web.chat.repository.chat.ChatRepository
 import com.chat_project.web.member.Role
 import com.chat_project.web.member.entity.Member
 import com.chat_project.web.member.repository.MemberRepository
@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
-import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.test.annotation.Rollback
 import org.springframework.transaction.annotation.Transactional
 
