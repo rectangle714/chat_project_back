@@ -15,22 +15,39 @@ import javax.crypto.spec.SecretKeySpec
 @Component
 @PropertySource("classpath:jwt.yml")
 class TokenProvider(
-    @Value("\${secret-key}")
+    @Value("\${secretKey}")
     private val secretKey: String,
-    @Value("\${expiration-hours}")
-    private val expirationHours: Long,
+    @Value("\${accessTokenExpiration}")
+    private val accessTokenExpiration: Long,
+    @Value("\${refreshTokenExpiration}")
+    private val refreshTokenExpiration: Long,
 ) {
-    fun createToken(userInfo: String) = Jwts.builder()
-        .signWith(SecretKeySpec(secretKey.toByteArray(), SignatureAlgorithm.HS512.jcaName))
-        .setSubject(userInfo)
-        .setIssuedAt(Timestamp.valueOf(LocalDateTime.now()))
-        .setExpiration(Date.from(Instant.now().plus(expirationHours, ChronoUnit.HOURS)))
-        .compact()!!
+    fun createToken(userInfo: String, tokenType: TokenType): String {
+        val expiration: Long = if(tokenType == TokenType.REFRESH_TOKEN) refreshTokenExpiration else accessTokenExpiration
 
-    fun validationToken(token: String): String? = Jwts.parserBuilder()
+        return Jwts.builder()
+            .signWith(SecretKeySpec(secretKey.toByteArray(), SignatureAlgorithm.HS512.jcaName))
+            .setSubject(userInfo)
+            .setIssuedAt(Timestamp.valueOf(LocalDateTime.now()))
+            .setExpiration(Date.from(Instant.now().plus(expiration, ChronoUnit.HOURS)))
+            .compact()!!
+    }
+
+    fun getTokenSubject(token: String): String? = Jwts.parserBuilder()
         .setSigningKey(secretKey.toByteArray())
         .build()
         .parseClaimsJws(token)
         .body
         .subject
+
+    fun getTokenExpiration(token: String?): Long {
+        val expiration = Jwts.parserBuilder()
+            .setSigningKey(secretKey.toByteArray())
+            .build()
+            .parseClaimsJws(token)
+            .body
+            .expiration
+
+        return expiration.time - Instant.now().toEpochMilli()
+    }
 }

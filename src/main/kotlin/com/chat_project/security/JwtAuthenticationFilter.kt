@@ -42,7 +42,7 @@ class JwtAuthenticationFilter(
 
     private fun parseTokenInfo(token: String?) = (
             token?.takeIf { it.length >= 10 }
-                ?.let { tokenProvider.validationToken(it) }
+                ?.let { tokenProvider.getTokenSubject(it) }
                 ?: "anonymous:anonymous"
             ).split(":")
         .let { User(it[0], "", listOf(SimpleGrantedAuthority(it[1]))) }

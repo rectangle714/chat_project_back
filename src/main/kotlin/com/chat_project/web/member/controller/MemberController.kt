@@ -1,13 +1,17 @@
 package com.chat_project.web.member.controller
 
 import com.chat_project.common.logger
+import com.chat_project.security.TokenDTO
+import com.chat_project.security.TokenProvider
 import com.chat_project.web.member.dto.MemberDTO
 import com.chat_project.web.member.entity.Member
 import com.chat_project.web.member.repository.MemberRepository
 import com.chat_project.web.member.service.MemberService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
+import jakarta.servlet.http.HttpServletRequest
 import org.modelmapper.ModelMapper
+import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
@@ -34,13 +38,18 @@ class MemberController(
 
     @Operation(method = "POST", summary = "사용자 로그인", description = "사용자 로그인")
     @PostMapping("/login")
-    fun login(email: String, password: String) : ResponseEntity<String>
+    fun login(email: String, password: String) : ResponseEntity<TokenDTO>
         = ResponseEntity.status(HttpStatus.OK).body(memberService.login(email, password))
 
     @Operation(method = "POST", summary = "사용자 로그아웃", description = "사용자 로그아웃 API")
     @PostMapping("/logout")
-    fun logout(@AuthenticationPrincipal user: User)
-        = ResponseEntity.status(HttpStatus.OK).body(memberService.logout(user.username))
+    fun logout(@AuthenticationPrincipal user: User, @RequestHeader("Authorization") token: String): ResponseEntity<String>
+        = ResponseEntity.status(HttpStatus.OK).body(memberService.logout(user.username, token))
+
+    @Operation(method = "POST", summary = "토큰 재발급", description = "REFRESH 토큰 재발급 API")
+    @PostMapping("/reissue")
+    fun reissue(@RequestHeader("RefreshToken") refreshToken: String): ResponseEntity<String>
+        = ResponseEntity.ok(memberService.reissue(refreshToken))
 
     @Operation(method = "GET", summary = "사용자 정보 조회")
     @GetMapping("/info")

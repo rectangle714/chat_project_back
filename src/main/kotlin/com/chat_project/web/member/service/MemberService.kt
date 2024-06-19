@@ -4,22 +4,26 @@ import com.chat_project.common.logger
 import com.chat_project.common.util.RedisUtil
 import com.chat_project.exception.CustomException
 import com.chat_project.exception.CustomExceptionCode
+import com.chat_project.security.TokenDTO
 import com.chat_project.security.TokenProvider
+import com.chat_project.security.TokenType
 import com.chat_project.web.member.dto.MemberDTO
 import com.chat_project.web.member.entity.Member
 import com.chat_project.web.member.repository.MemberRepository
 import org.modelmapper.ModelMapper
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.http.ResponseEntity
+import org.springframework.context.annotation.PropertySource
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.Duration
+import java.util.*
+import javax.annotation.Resource
 
 @Service
 @Transactional(rollbackFor = [Exception::class])
+@PropertySource("classpath:jwt.yml")
 class MemberService(
-    @Value("\${expiration-hours}")
-    private val expirationHours: Long,
     private val memberRepository: MemberRepository,
     private val passwordEncoder: BCryptPasswordEncoder,
     private val modelMapper: ModelMapper,
@@ -30,19 +34,34 @@ class MemberService(
     val logger = logger()
 
     @Transactional(readOnly = true)
-    fun login(email: String, password: String): String {
+    fun login(email: String, password: String): TokenDTO {
         val member: Member = memberRepository.findByEmail(email)
             .takeIf { passwordEncoder.matches(password, it?.password) }
             ?: throw IllegalArgumentException("아이디 또는 번호가 일치하지 않습니다.")
 
-        val token = tokenProvider.createToken("${member.email}:${member.role}")
-        redisUtil.setData(member.email, token, expirationHours)
-        return token
+        val accessToken = tokenProvider.createToken("${member.email}:${member.role}", TokenType.ACCESS_TOKEN)
+        val refreshToken = tokenProvider.createToken("${member.email}:${member.role}", TokenType.REFRESH_TOKEN)
+
+        val accessTokenExpiration = tokenProvider.getTokenExpiration(accessToken)
+        val refreshTokenExpiration = tokenProvider.getTokenExpiration(refreshToken)
+        val tokenDTO = TokenDTO(accessToken, refreshToken, accessTokenExpiration, refreshTokenExpiration)
+        redisUtil.setData(member.email, refreshToken, refreshTokenExpiration)
+
+        return tokenDTO
     }
 
-    fun logout(email: String): String {
-        redisUtil.hasKey(email).takeIf { redisUtil.deleteData(email) }
+    fun logout(email: String, token: String): String {
+        val token: String = token.takeIf { it.startsWith("Bearer ", true) ?: false }?.substring(7)!!
+        val expiration = tokenProvider.getTokenExpiration(token)
+        redisUtil.getData(email).takeIf { redisUtil.deleteData(email) }
+        redisUtil.setData(token, "logout", Duration.ofMillis(expiration).toHours())
         return "success"
+    }
+
+    fun reissue(refreshToken: String): String {
+        val validationToken = tokenProvider.getTokenSubject(refreshToken)
+
+        return ""
     }
 
     fun addMember(memberDTO: MemberDTO): String {
