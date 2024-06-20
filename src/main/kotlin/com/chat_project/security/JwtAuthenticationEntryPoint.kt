@@ -1,5 +1,6 @@
 package com.chat_project.security
 
+import com.chat_project.common.logger
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.beans.factory.annotation.Qualifier
@@ -14,6 +15,7 @@ class JwtAuthenticationEntryPoint(
     @Qualifier("handlerExceptionResolver")
     private val resolver: HandlerExceptionResolver
 ) : AuthenticationEntryPoint {
+    val logger = logger()
     override fun commence(
         request: HttpServletRequest?,
         response: HttpServletResponse?,

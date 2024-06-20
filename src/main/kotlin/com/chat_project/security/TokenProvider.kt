@@ -2,8 +2,12 @@ package com.chat_project.security
 
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
+import jakarta.servlet.http.HttpServletRequest
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.PropertySource
+import org.springframework.http.HttpHeaders
+import org.springframework.security.core.authority.SimpleGrantedAuthority
+import org.springframework.security.core.userdetails.User
 import org.springframework.stereotype.Component
 import java.sql.Date
 import java.sql.Timestamp
@@ -50,4 +54,15 @@ class TokenProvider(
 
         return expiration.time - Instant.now().toEpochMilli()
     }
+
+    fun parseBearerToken(token: String) =
+        token.takeIf { it.startsWith("Bearer ", true) ?: false }?.substring(7)
+
+    fun parseTokenInfo(token: String?) = (
+            token?.takeIf { it.length >= 10 }
+                ?.let { getTokenSubject(it) }
+                ?: "anonymous:anonymous"
+            ).split(":")
+        .let { User(it[0], "", listOf(SimpleGrantedAuthority(it[1]))) }
+
 }

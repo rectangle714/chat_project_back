@@ -4,9 +4,9 @@ import java.time.LocalDateTime
 
 data class ChatRoomDTO(
 
-    var chatRoomId: Long,
+    var chatRoomId: Long?,
     var chatRoomName: String,
-    var registerDate: LocalDateTime,
-    var updateDate: LocalDateTime
+    var registerDate: LocalDateTime?,
+    var updateDate: LocalDateTime?
 
 )

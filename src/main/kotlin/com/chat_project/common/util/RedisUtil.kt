@@ -13,7 +13,6 @@ class RedisUtil(
     }
 
     fun setData(key: String, o: Any, hours: Long?) {
-        redisTemplate.valueSerializer = Jackson2JsonRedisSerializer(o.javaClass)
         redisTemplate.opsForValue()[key, o, hours!!] = TimeUnit.HOURS
     }
 

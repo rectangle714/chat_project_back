@@ -17,6 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.Duration
+import java.time.Instant
 import java.util.*
 import javax.annotation.Resource
 
@@ -51,17 +52,24 @@ class MemberService(
     }
 
     fun logout(email: String, token: String): String {
-        val token: String = token.takeIf { it.startsWith("Bearer ", true) ?: false }?.substring(7)!!
-        val expiration = tokenProvider.getTokenExpiration(token)
+        val parseToken: String = tokenProvider.parseBearerToken(token)!!
+        val expiration = tokenProvider.getTokenExpiration(parseToken)
         redisUtil.getData(email).takeIf { redisUtil.deleteData(email) }
-        redisUtil.setData(token, "logout", Duration.ofMillis(expiration).toHours())
+        redisUtil.setData(parseToken, "logout", Instant.ofEpochMilli(expiration).toEpochMilli())
         return "success"
     }
 
-    fun reissue(refreshToken: String): String {
-        val validationToken = tokenProvider.getTokenSubject(refreshToken)
+    fun reissue(refreshToken: String): TokenDTO {
+        val tokenSubject: String = tokenProvider.getTokenSubject(refreshToken)!!
+        val email: String = tokenSubject.split(":")[0]
+        val redisRefreshToken = redisUtil.getData(email)
+        if(Objects.isNull(redisRefreshToken) || !redisRefreshToken.equals(refreshToken.toString())) {
+            throw CustomException(CustomExceptionCode.BAD_REFRESH_TOKEN_INFO)
+        }
 
-        return ""
+        val newToken = tokenProvider.createToken(tokenSubject, TokenType.ACCESS_TOKEN)
+        val newTokenExpiration = tokenProvider.getTokenExpiration(newToken)
+        return TokenDTO(newToken, "", newTokenExpiration, 0)
     }
 
     fun addMember(memberDTO: MemberDTO): String {

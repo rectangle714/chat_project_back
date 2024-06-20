@@ -1,11 +1,15 @@
 package com.chat_project.config
 
+import com.chat_project.common.RedisSubscriber
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.data.redis.connection.RedisConnectionFactory
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory
 import org.springframework.data.redis.core.RedisTemplate
+import org.springframework.data.redis.listener.ChannelTopic
+import org.springframework.data.redis.listener.RedisMessageListenerContainer
+import org.springframework.data.redis.listener.adapter.MessageListenerAdapter
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories
 import org.springframework.data.redis.serializer.StringRedisSerializer
 
@@ -33,4 +37,30 @@ class RedisConfig(
             this.valueSerializer = StringRedisSerializer()
         }
     }
+
+    @Bean
+    fun listenAdapter(subscriber: RedisSubscriber): MessageListenerAdapter {
+        return MessageListenerAdapter(subscriber, "onMessage")
+    }
+
+    @Bean
+    fun redisMessageListenerContainer(
+        connectionFactory: RedisConnectionFactory,
+        listenerAdapter: MessageListenerAdapter,
+        channelTopic: ChannelTopic
+    ): RedisMessageListenerContainer {
+        val container: RedisMessageListenerContainer = RedisMessageListenerContainer()
+        container.connectionFactory = connectionFactory
+        container.addMessageListener(listenerAdapter, channelTopic)
+        return container
+    }
+
+    @Bean
+    fun channelTopic(): ChannelTopic {
+        return ChannelTopic("chatroom")
+    }
+
 }
+
+
+
