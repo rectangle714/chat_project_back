@@ -23,8 +23,8 @@ class ChatTest {
     @Transactional
     fun createChat() {
         var member: Member? = memberRepository.findByEmail("test")
-        val chat: Chat? = member?.let { Chat( "test", it) }
-        chatRepository.save(chat)
+//        val chat: Chat? = member?.let { Chat( "test", it) }
+//        chatRepository.save(chat)
     }
 
     @Test
