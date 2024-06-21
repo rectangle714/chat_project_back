@@ -1,6 +1,5 @@
-package com.chat_project.config
+package com.chat_project.config.redis
 
-import com.chat_project.common.RedisSubscriber
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -38,11 +37,16 @@ class RedisConfig(
         }
     }
 
+    /* pub,sub 모델에서 subscriber 역할 수행 */
     @Bean
     fun listenAdapter(subscriber: RedisSubscriber): MessageListenerAdapter {
         return MessageListenerAdapter(subscriber, "onMessage")
     }
 
+    /*
+    *   컨테이너는 redis 채널로부터 메세지를 받는데 사용,
+    *   구독자들에게 메시지를 dispatch 하는 역할 수행 ( 메세지를 수신하는데 관련한 비즈니스 로직 작성 가능 )
+    */
     @Bean
     fun redisMessageListenerContainer(
         connectionFactory: RedisConnectionFactory,
@@ -55,6 +59,7 @@ class RedisConfig(
         return container
     }
 
+    /* 메세지를 주고받는 채널 이름 chatroom 설정 */
     @Bean
     fun channelTopic(): ChannelTopic {
         return ChannelTopic("chatroom")

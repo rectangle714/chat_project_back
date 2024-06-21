@@ -1,6 +1,6 @@
 package com.chat_project.common.dto
 
-import com.chat_project.common.ApiStatus
+import com.chat_project.common.constant.ApiStatus
 
 data class ApiResponse(
     val status: ApiStatus,

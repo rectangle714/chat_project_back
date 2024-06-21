@@ -1,7 +1,7 @@
 package com.chat_project.member
 
 import com.chat_project.web.chat.repository.chat.ChatRepository
-import com.chat_project.web.member.Role
+import com.chat_project.common.constant.Role
 import com.chat_project.web.member.entity.Member
 import com.chat_project.web.member.repository.MemberRepository
 import lombok.extern.slf4j.Slf4j

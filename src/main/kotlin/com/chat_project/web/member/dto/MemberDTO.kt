@@ -1,6 +1,6 @@
 package com.chat_project.web.member.dto
 
-import com.chat_project.web.member.Role
+import com.chat_project.common.constant.Role
 import java.time.LocalDateTime
 
 data class MemberDTO (

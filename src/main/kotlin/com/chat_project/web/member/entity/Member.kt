@@ -3,7 +3,7 @@ package com.chat_project.web.member.entity
 import com.chat_project.web.chat.entity.Chat
 import com.chat_project.web.chat.entity.ChatRoomMate
 import com.chat_project.common.BaseEntity
-import com.chat_project.web.member.Role
+import com.chat_project.common.constant.Role
 import com.chat_project.web.member.dto.MemberDTO
 import groovy.transform.builder.Builder
 import jakarta.persistence.*

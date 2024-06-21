@@ -1,6 +1,7 @@
 package com.chat_project.common.util
 import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer
+import org.springframework.data.redis.serializer.StringRedisSerializer
 import org.springframework.stereotype.Component
 import java.util.concurrent.TimeUnit
 
@@ -13,6 +14,7 @@ class RedisUtil(
     }
 
     fun setData(key: String, o: Any, hours: Long?) {
+        redisTemplate.valueSerializer = StringRedisSerializer()
         redisTemplate.opsForValue()[key, o, hours!!] = TimeUnit.HOURS
     }
 

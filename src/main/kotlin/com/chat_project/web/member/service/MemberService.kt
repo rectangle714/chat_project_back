@@ -11,15 +11,12 @@ import com.chat_project.web.member.dto.MemberDTO
 import com.chat_project.web.member.entity.Member
 import com.chat_project.web.member.repository.MemberRepository
 import org.modelmapper.ModelMapper
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.PropertySource
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.time.Duration
 import java.time.Instant
 import java.util.*
-import javax.annotation.Resource
 
 @Service
 @Transactional(rollbackFor = [Exception::class])
