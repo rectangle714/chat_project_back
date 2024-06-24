@@ -6,14 +6,14 @@ import jakarta.persistence.*
 
 @Entity
 class Chat(
-    content: String,
+    message: String,
     member: Member?,
     chatRoom: ChatRoom
 ): BaseEntity() {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "chat_id")
     var id:Long? = null
-    var content = content
+    var message = message
         protected set
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "member_id")

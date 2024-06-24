@@ -8,8 +8,8 @@ data class ChatDTO(
     val chatId: Long? = 0,
     val chatRoomId: Long? = 0,
     val memberId: Long? = 0,
-    val content: String = "",
-    val message: String? = "",
-    val token: String? = "",
+    var message: String = "",
+    val sender: String = "",
+    val chatType: String = ""
 
-    )
+)

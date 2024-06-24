@@ -32,7 +32,7 @@ class MemberTest {
     @Rollback(value = false)
     fun createMember() {
         val password: String = passwordEncoder.encode("123")
-        val newMember: Member = Member("test", password, "nickname", Role.USER)
+        val newMember: Member = Member("admin", password, "관리자", Role.ADMIN)
         memberRepository.save(newMember)
     }
 

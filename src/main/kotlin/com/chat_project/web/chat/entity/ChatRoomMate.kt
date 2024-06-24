@@ -6,7 +6,7 @@ import jakarta.persistence.*
 
 @Entity
 class ChatRoomMate(
-    member:Member,
+    member:Member?,
     chatRoom:ChatRoom
 ): BaseEntity() {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
