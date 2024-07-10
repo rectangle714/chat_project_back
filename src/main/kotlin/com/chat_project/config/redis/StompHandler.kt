@@ -1,11 +1,10 @@
 package com.chat_project.config.redis
 
-import com.chat_project.common.logger
+import com.chat_project.common.util.logger
 import com.chat_project.common.util.RedisUtil
 import com.chat_project.exception.CustomException
 import com.chat_project.exception.CustomExceptionCode
 import com.chat_project.security.TokenProvider
-import com.chat_project.web.member.entity.Member
 import com.chat_project.web.member.repository.MemberRepository
 import org.springframework.messaging.Message
 import org.springframework.messaging.MessageChannel
@@ -14,7 +13,6 @@ import org.springframework.messaging.simp.stomp.StompHeaderAccessor
 import org.springframework.messaging.support.ChannelInterceptor
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.security.web.authentication.WebAuthenticationDetails
 import org.springframework.stereotype.Component
 import java.util.*
 
@@ -24,7 +22,6 @@ class StompHandler(
     private val memberRepository: MemberRepository,
     private val redisUtil: RedisUtil
 ): ChannelInterceptor {
-
     val logger = logger()
 
     /* websocket 요청 전 처리 */

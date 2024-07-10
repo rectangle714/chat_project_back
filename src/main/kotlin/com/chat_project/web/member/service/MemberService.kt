@@ -1,7 +1,7 @@
 package com.chat_project.web.member.service
 
-import com.chat_project.common.logger
 import com.chat_project.common.util.RedisUtil
+import com.chat_project.common.util.logger
 import com.chat_project.exception.CustomException
 import com.chat_project.exception.CustomExceptionCode
 import com.chat_project.security.TokenDTO
@@ -28,7 +28,6 @@ class MemberService(
     private val tokenProvider: TokenProvider,
     private val redisUtil: RedisUtil
 ) {
-
     val logger = logger()
 
     @Transactional(readOnly = true)
@@ -39,13 +38,11 @@ class MemberService(
 
         val accessToken = tokenProvider.createToken("${member.email}:${member.role}", TokenType.ACCESS_TOKEN)
         val refreshToken = tokenProvider.createToken("${member.email}:${member.role}", TokenType.REFRESH_TOKEN)
-
         val accessTokenExpiration = tokenProvider.getTokenExpiration(accessToken)
         val refreshTokenExpiration = tokenProvider.getTokenExpiration(refreshToken)
-        val tokenDTO = TokenDTO(accessToken, refreshToken, accessTokenExpiration, refreshTokenExpiration)
         redisUtil.setData(member.email, refreshToken, refreshTokenExpiration)
 
-        return tokenDTO
+        return TokenDTO(accessToken, refreshToken, accessTokenExpiration, refreshTokenExpiration)
     }
 
     fun logout(email: String, token: String): String {
@@ -70,13 +67,12 @@ class MemberService(
     }
 
     fun addMember(memberDTO: MemberDTO): String {
-        val member: Member = Member.from(memberDTO, passwordEncoder)
-        memberRepository.save(member)
+        memberRepository.save(Member.from(memberDTO, passwordEncoder))
         return "success"
     }
 
     fun updateMember(memberDTO: MemberDTO): String {
-        val member = memberRepository.findByEmail(memberDTO.email)
+        val member: Member = memberRepository.findByEmail(memberDTO.email)
             .takeIf { passwordEncoder.matches(memberDTO.password, it?.password) }
             ?: throw CustomException(CustomExceptionCode.NOT_FOUND_MEMBER)
         member.update(memberDTO, passwordEncoder)
@@ -87,7 +83,7 @@ class MemberService(
     @Transactional(readOnly = true)
     fun getMemberInfo(email: String): MemberDTO {
         val member: Member = memberRepository.findByEmail(email)
-            ?: throw CustomException(CustomExceptionCode.NOT_FOUND_MEMBER)
+                                ?: throw CustomException(CustomExceptionCode.NOT_FOUND_MEMBER)
         return modelMapper.map(member, MemberDTO::class.java).also { it.password = "" }
     }
 

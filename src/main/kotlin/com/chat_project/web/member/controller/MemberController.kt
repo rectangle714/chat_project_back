@@ -1,17 +1,13 @@
 package com.chat_project.web.member.controller
 
-import com.chat_project.common.logger
+import com.chat_project.common.util.logger
 import com.chat_project.security.TokenDTO
-import com.chat_project.security.TokenProvider
 import com.chat_project.web.member.dto.MemberDTO
-import com.chat_project.web.member.entity.Member
 import com.chat_project.web.member.repository.MemberRepository
 import com.chat_project.web.member.service.MemberService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
-import jakarta.servlet.http.HttpServletRequest
 import org.modelmapper.ModelMapper
-import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
@@ -34,7 +30,6 @@ class MemberController(
     @PostMapping("/signup")
     fun signUp(memberDTO: MemberDTO) : ResponseEntity<String>
          = ResponseEntity.status(HttpStatus.OK).body(memberService.addMember(memberDTO))
-
 
     @Operation(method = "POST", summary = "사용자 로그인", description = "사용자 로그인")
     @PostMapping("/login")
@@ -68,5 +63,4 @@ class MemberController(
     @DeleteMapping("/delete")
     fun delete(@AuthenticationPrincipal user: User): ResponseEntity<String>
         = ResponseEntity.status(HttpStatus.OK).body(memberService.deleteMember(user.username))
-
 }

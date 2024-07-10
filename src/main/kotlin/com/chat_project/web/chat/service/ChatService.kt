@@ -15,10 +15,8 @@ import org.springframework.transaction.annotation.Transactional
 @Transactional(rollbackFor = [ Exception::class ])
 class ChatService(
     private val memberRepository: MemberRepository,
-    private val chatRepository: ChatRepository,
-    private val chatRoomRepository: ChatRoomRepository
+    private val chatRepository: ChatRepository
 ) {
-
     @Transactional(readOnly = true)
     fun getChatList(chatRoomId: Long): MutableList<Chat> {
         return chatRepository.findByChatRoomId(chatRoomId)
@@ -27,5 +25,4 @@ class ChatService(
     fun addChat(user: User, chatDTO: ChatDTO) {
         val member = memberRepository.findByEmail(user.username)
     }
-
 }

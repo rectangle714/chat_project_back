@@ -1,6 +1,5 @@
 package com.chat_project.web.chat.entity
 
-import com.fasterxml.jackson.annotation.JsonBackReference
 import jakarta.persistence.*
 
 @Entity
@@ -10,7 +9,6 @@ class File(
     fileSize: Long?,
     chat: Chat
 ) {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "file_id")
@@ -28,5 +26,4 @@ class File(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chat_id")
     var chat = chat
-
 }

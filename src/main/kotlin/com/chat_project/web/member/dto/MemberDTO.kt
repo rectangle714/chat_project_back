@@ -11,6 +11,4 @@ data class MemberDTO (
     var role: Role = Role.USER,
     var registerDate: LocalDateTime = LocalDateTime.now(),
     var updateDate: LocalDateTime = LocalDateTime.now()
-) {
-
-}
+)

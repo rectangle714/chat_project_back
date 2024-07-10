@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Configuration
 
 @Configuration
 class ModelMapperConfig {
-
     @Bean
     fun ModelMapper() : ModelMapper {
         val modelMapper : ModelMapper = org.modelmapper.ModelMapper()
@@ -18,5 +17,4 @@ class ModelMapperConfig {
         }
         return modelMapper
     }
-
 }

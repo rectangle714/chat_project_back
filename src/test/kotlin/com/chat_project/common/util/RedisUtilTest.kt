@@ -1,13 +1,13 @@
-package com.chat_project.redis
+package com.chat_project.common.util
 
-import com.chat_project.common.util.RedisUtil
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.data.redis.core.RedisTemplate
 
+
 @SpringBootTest
-class RedisTest @Autowired constructor(
+class RedisUtilTest @Autowired constructor(
     private val redisTemplate: RedisTemplate<String, Any>,
     private val redisBlackListTemplate: RedisTemplate<String, Any>
 ) {

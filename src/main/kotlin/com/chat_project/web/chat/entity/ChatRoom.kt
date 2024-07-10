@@ -13,8 +13,7 @@ class ChatRoom(
     @Column(name = "chat_room_id")
     var id:Long? = null
 
-
-    @Comment("방 이름")
+    @Comment("채팅방 이름")
     var roomName = roomName
         protected set
 

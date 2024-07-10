@@ -13,16 +13,13 @@ class ChatRoomService(
     private val chatRoomRepository: ChatRoomRepository,
     private val mapper: ModelMapper
 ) {
-
     @Transactional(readOnly = true)
     fun getChatRoomList(): MutableList<ChatRoom> {
         return chatRoomRepository.findAll()
     }
 
     fun addChatRoom(chatRoomDTO: ChatRoomDTO): String {
-        val chatRoom: ChatRoom = mapper.map(chatRoomDTO, ChatRoom::class.java)
-        chatRoomRepository.save(chatRoom)
+        chatRoomRepository.save(mapper.map(chatRoomDTO, ChatRoom::class.java))
         return "success"
     }
-
 }

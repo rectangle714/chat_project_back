@@ -34,7 +34,6 @@ class ChatController(
     private val chatService: ChatService,
     private val memberRepository: MemberRepository
 ) {
-
     @GetMapping("/list")
     @Operation(method = "GET", summary = "채팅 목록 조회")
     fun list(chatRoomId: Long): MutableList<Chat>
@@ -46,5 +45,4 @@ class ChatController(
         chatService.addChat(user, chatDTO)
         return ResponseEntity.ok("success")
     }
-
 }

@@ -1,7 +1,7 @@
 package com.chat_project.handler
 
 import com.chat_project.common.dto.ApiResponse
-import com.chat_project.common.logger
+import com.chat_project.common.util.logger
 import com.chat_project.exception.CustomException
 import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.MalformedJwtException

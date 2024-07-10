@@ -13,8 +13,10 @@ class Chat(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "chat_id")
     var id:Long? = null
+
     var message = message
         protected set
+
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "member_id")
     var member = member

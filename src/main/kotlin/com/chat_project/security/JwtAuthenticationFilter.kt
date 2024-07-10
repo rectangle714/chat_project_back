@@ -1,6 +1,6 @@
 package com.chat_project.security
 
-import com.chat_project.common.logger
+import com.chat_project.common.util.logger
 import com.chat_project.common.util.RedisUtil
 import com.chat_project.exception.CustomException
 import com.chat_project.exception.CustomExceptionCode

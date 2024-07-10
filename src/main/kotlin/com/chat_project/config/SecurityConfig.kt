@@ -37,5 +37,4 @@ class SecurityConfig(
             }
             .addFilterBefore(jwtAuthenticationFilter, BasicAuthenticationFilter::class.java)
             .build()!!
-
 }

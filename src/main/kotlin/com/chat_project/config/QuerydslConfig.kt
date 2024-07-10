@@ -11,10 +11,8 @@ class QuerydslConfig(
     @PersistenceContext
     val entityManager: EntityManager
 ) {
-
     @Bean
     fun jpaQueryFactory(): JPAQueryFactory {
         return JPAQueryFactory(entityManager)
     }
-
 }

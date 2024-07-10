@@ -1,6 +1,6 @@
 package com.chat_project.config.redis
 
-import com.chat_project.common.logger
+import com.chat_project.common.util.logger
 import com.chat_project.web.chat.dto.ChatDTO
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.data.redis.connection.Message

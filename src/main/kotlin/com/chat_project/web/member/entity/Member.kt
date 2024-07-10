@@ -20,15 +20,20 @@ class Member (
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
     var id:Long = 0
+
     var email = email
         protected set
+
     var password = password
         protected set
+
     var nickname = nickname
         protected set
+
     @Enumerated(EnumType.STRING)
     var role = role
         protected set
+
     @OneToMany(mappedBy = "member")
     var chattings:MutableList<Chat> = ArrayList()
         protected set
@@ -51,5 +56,4 @@ class Member (
         this.password = encoder.encode(newMember.password)
         this.nickname = newMember.nickname
     }
-
 }

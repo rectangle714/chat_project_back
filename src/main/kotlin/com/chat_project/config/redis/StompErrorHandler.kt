@@ -1,15 +1,12 @@
 package com.chat_project.config.redis
 
-import com.chat_project.common.logger
-import com.chat_project.exception.CustomException
-import com.chat_project.exception.CustomExceptionCode
+import com.chat_project.common.util.logger
 import org.springframework.messaging.Message
 import org.springframework.messaging.simp.stomp.StompCommand
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor
 import org.springframework.messaging.support.MessageBuilder
 import org.springframework.stereotype.Component
 import org.springframework.web.socket.messaging.StompSubProtocolErrorHandler
-import java.nio.charset.MalformedInputException
 import java.nio.charset.StandardCharsets
 
 @Component

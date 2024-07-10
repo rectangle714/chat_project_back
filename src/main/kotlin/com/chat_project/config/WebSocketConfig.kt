@@ -17,7 +17,6 @@ class WebSocketConfig(
     private val stompHandler: StompHandler,
     private val stompErrorHandler: StompErrorHandler
 ): WebSocketMessageBrokerConfigurer {
-
     override fun registerStompEndpoints(registry: StompEndpointRegistry) {
         registry
             .addEndpoint("/ws")

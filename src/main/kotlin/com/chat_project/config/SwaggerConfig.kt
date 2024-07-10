@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Configuration
 
 @Configuration
 class SwaggerConfig{
-
     private val SECURITY_SCHEME_NAME = "authorization"
 
     @Bean
